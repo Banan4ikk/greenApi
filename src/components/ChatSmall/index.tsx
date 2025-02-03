@@ -2,24 +2,27 @@ import React from "react";
 import classNames from "classnames";
 import "./chatSmall.scss";
 
-const ChatSmall = ({
+type ChatSmallProps = {
+  name: string;
+  message?: string;
+  active?: boolean;
+  onClick: () => void;
+};
+
+const ChatSmall: React.FC<ChatSmallProps> = ({
   name,
   message,
-  time,
   active,
-}: {
-  name: string;
-  message: string;
-  time: string;
-  active?: boolean;
+  onClick,
 }) => {
   return (
-    <div className={classNames("chat-small", { active })}>
+    <div className={classNames("chat-small", { active })} onClick={onClick}>
       <div className="chat-info">
-        <h4>{name}</h4>
+        <span className="user-info">
+          Чат с пользователем - <h4>{name}</h4>
+        </span>
         <p>{message}</p>
       </div>
-      <span className="chat-time">{time}</span>
     </div>
   );
 };

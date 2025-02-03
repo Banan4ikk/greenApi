@@ -7,7 +7,7 @@ const Message = ({
   sender,
 }: {
   text: string;
-  sender: "me" | "other";
+  sender: "outgoing" | "incoming";
 }) => {
   return <div className={classNames("message", sender)}>{text}</div>;
 };

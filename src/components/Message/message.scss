@@ -5,12 +5,12 @@
   max-width: 70%;
   word-wrap: break-word;
 
-  &.me {
+  &.outgoing {
     background: #dcf8c6;
     align-self: flex-end;
   }
 
-  &.other {
+  &.incoming {
     background: #fff;
     align-self: flex-start;
   }

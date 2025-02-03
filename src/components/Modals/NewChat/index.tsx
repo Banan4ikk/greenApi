@@ -36,7 +36,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({
         />
         <div className="modal-actions">
           <button onClick={onClose}>Отмена</button>
-          <button onClick={handleSubmit}>Отправить</button>
+          <button onClick={handleSubmit}>Подтвердить</button>
         </div>
       </div>
     </div>

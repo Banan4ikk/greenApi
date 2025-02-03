@@ -1,12 +1,20 @@
 .chat-small {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  padding: 30px 15px;
+  border-bottom: 1px solid #d5d5d5;
   cursor: pointer;
 
-  &.active {
+  &:hover {
     background: #d3e2ff;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 10px;
+    gap: 3px
   }
 
   .chat-info {
