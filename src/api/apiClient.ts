@@ -1,7 +1,10 @@
 import axios from "axios";
+import { getInstanceData } from "../utils";
+
+const { API_TOKEN_INSTANCE, ID_INSTANCE, API_URL } = getInstanceData();
 
 const apiClient = axios.create({
-  baseURL: `${process.env.API_URL}/waInstance${process.env.ID_INSTANCE}`,
+  baseURL: `${API_URL}/waInstance${ID_INSTANCE}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -9,7 +12,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   // Изменяем URL, добавляя apiTokenInstance
-  config.url = `${config.url}/${process.env.API_TOKEN_INSTANCE}`;
+  config.url = `${config.url}/${API_TOKEN_INSTANCE}`;
   return config;
 });
 

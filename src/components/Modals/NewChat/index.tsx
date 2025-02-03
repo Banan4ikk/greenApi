@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./newChat.scss";
+import Modal from "../../Modal";
 
 interface NewChatModalProps {
   isOpen: boolean;
@@ -25,21 +26,15 @@ const NewChatModal: React.FC<NewChatModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Новый чат</h2>
-        <input
-          type="text"
-          placeholder="Введите номер телефона"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-        <div className="modal-actions">
-          <button onClick={onClose}>Отмена</button>
-          <button onClick={handleSubmit}>Подтвердить</button>
-        </div>
-      </div>
-    </div>
+    <Modal isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
+      <h2>Новый чат</h2>
+      <input
+        type="text"
+        placeholder="Введите номер телефона"
+        value={phoneNumber}
+        onChange={(e) => setPhoneNumber(e.target.value)}
+      />
+    </Modal>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchChats, saveChat } from "../../store/chatSlice/thunks";
-import { getChatId, getChatNameById } from "../../utils";
+import { getChatId, getChatNameById, isEmptyInstanceData } from "../../utils";
 import { useAppDispatch, useAppSelector } from "../../store";
 import ChatSmall from "../ChatSmall";
 import Chat from "../Chat";
@@ -10,15 +10,17 @@ import "./chatMain.scss";
 import { addChat, setActiveChatId } from "../../store/chatSlice";
 import useShortPolling from "../../utils/hooks/useShortPolling";
 import Loader from "../Loader";
+import AddInstanceData from "../Modals/AddInstanceData";
 
 const ChatMain = () => {
   const dispatch = useAppDispatch();
-  const { chats, activeChatId, meta } = useAppSelector((store) => store.chats);
+  const { chats, meta } = useAppSelector((store) => store.chats);
   const isFirstRender = useRef(true); // чтобы не вызывалось 2 раза
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [user, setUser] = useState("");
+  const [isVisibleInstanceModal, setIsVisibleInstanceModal] = useState(false);
 
-  // useShortPolling();
+  useShortPolling();
 
   const handleNewChat = () => setIsVisibleModal(true);
 
@@ -43,10 +45,18 @@ const ChatMain = () => {
     });
   };
 
+  const onCloseInstanceModal = () => {
+    setIsVisibleInstanceModal(false);
+  };
+
   useEffect(() => {
+    if (isEmptyInstanceData()) {
+      setIsVisibleInstanceModal(true);
+      return;
+    }
     if (!chats) dispatch(fetchChats());
     if (isFirstRender.current) setSettings();
-  }, []);
+  }, [isEmptyInstanceData]);
 
   return (
     <div className="chat-app">
@@ -72,6 +82,10 @@ const ChatMain = () => {
         isOpen={isVisibleModal}
         onClose={() => setIsVisibleModal(false)}
         onSend={onSubmitNewChat}
+      />
+      <AddInstanceData
+        isOpen={isVisibleInstanceModal}
+        onClose={onCloseInstanceModal}
       />
     </div>
   );

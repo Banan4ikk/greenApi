@@ -1,4 +1,4 @@
-import { Message } from "../chatSlice/types";
+import { Message } from "../messagesSlice/types";
 
 type InstanceData = {
   idInstance: 1234;

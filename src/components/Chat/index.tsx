@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./chat.scss";
 import { AxiosResponse } from "axios";
-import apiClient from "../../api/apiClient";
+import Message from "../Message";
+import Loader from "../Loader";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchMessages } from "../../store/chatSlice/thunks";
-import Message from "../Message";
 import { getChatId } from "../../utils";
-import { addMessage } from "../../store/chatSlice";
-import { ReturnMessage } from "../../store/chatSlice/types";
-import Loader from "../Loader";
+import { addMessage } from "../../store/messagesSlice";
+import { ReturnMessage } from "../../store/messagesSlice/types";
+import apiClient from "../../api/apiClient";
+import "./chat.scss";
 
 type ChatProps = {
   user: string;
@@ -16,9 +16,8 @@ type ChatProps = {
 
 const Chat: React.FC<ChatProps> = ({ user }) => {
   const dispatch = useAppDispatch();
-  const { messages, activeChatId, meta } = useAppSelector(
-    (state) => state.chats
-  );
+  const { activeChatId } = useAppSelector((state) => state.chats);
+  const { messages, meta } = useAppSelector((state) => state.messages);
   const [message, setMessage] = useState("");
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +44,7 @@ const Chat: React.FC<ChatProps> = ({ user }) => {
           chatId: activeChatId,
           text: message,
           messageId: response.data.messageId,
+          activeChatId,
         })
       );
     }
@@ -64,17 +64,17 @@ const Chat: React.FC<ChatProps> = ({ user }) => {
       ) : (
         <div className="messages">
           {messages &&
-            messages.map((message) => (
+            messages.map((item) => (
               <Message
-                text={message.extendedTextMessage?.text}
-                sender={message.type}
-                key={message.idMessage}
+                text={item.extendedTextMessage?.text}
+                sender={item.type}
+                key={item.idMessage}
               />
             ))}
         </div>
       )}
       {!messages ||
-        (!messages.length && (
+        (!messages.length && !meta.loading && (
           <div className="empty-messages">История сообщений пуста</div>
         ))}
       <div className="send-container">
@@ -84,7 +84,9 @@ const Chat: React.FC<ChatProps> = ({ user }) => {
           value={message}
           onChange={handleMessageChange}
         />
-        <button onClick={onSend}>Отправить</button>
+        <button onClick={onSend} type="button">
+          Отправить
+        </button>
       </div>
     </div>
   );

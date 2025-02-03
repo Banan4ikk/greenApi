@@ -2,7 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import foreignClient from "../../api/foreignClient";
 import apiClient from "../../api/apiClient";
-import { Chat, Message } from "./types";
+import { Chat } from "./types";
+import { Message } from "../messagesSlice/types";
 
 export const fetchChats = createAsyncThunk<Chat[]>(
   "messages/fetchChats", // Префикс для типов действий
