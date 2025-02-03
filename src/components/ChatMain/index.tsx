@@ -70,6 +70,12 @@ const ChatMain = () => {
                 onClick={() => handleClickChat(item.chatId)}
               />
             ))}
+          {!chats ||
+            (!chats.length && (
+              <div className="empty-chats">
+                Еще нет ни одного активного чата
+              </div>
+            ))}
         </aside>
       )}
       <Chat user={user} />

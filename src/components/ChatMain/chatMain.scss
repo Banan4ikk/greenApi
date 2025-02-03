@@ -10,6 +10,16 @@
   overflow-y: auto;
 }
 
+.empty-chats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 20px;
+  color: #959494;
+  width: 100%;
+}
+
 .new-button {
   position: fixed;
   bottom: 20px;
