@@ -9,10 +9,11 @@ import apiClient from "../../api/apiClient";
 import "./chatMain.scss";
 import { addChat, setActiveChatId } from "../../store/chatSlice";
 import useShortPolling from "../../utils/hooks/useShortPolling";
+import Loader from "../Loader";
 
 const ChatMain = () => {
   const dispatch = useAppDispatch();
-  const { chats, activeChatId } = useAppSelector((store) => store.chats);
+  const { chats, activeChatId, meta } = useAppSelector((store) => store.chats);
   const isFirstRender = useRef(true); // чтобы не вызывалось 2 раза
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [user, setUser] = useState("");
@@ -49,17 +50,21 @@ const ChatMain = () => {
 
   return (
     <div className="chat-app">
-      <aside className="chat-list">
-        {chats &&
-          chats.map((item) => (
-            <ChatSmall
-              name={item.name}
-              key={item.chatId}
-              onClick={() => handleClickChat(item.chatId)}
-            />
-          ))}
-      </aside>
-      <Chat user={user} chatId={activeChatId} />
+      {meta.loading ? (
+        <Loader />
+      ) : (
+        <aside className="chat-list">
+          {chats &&
+            chats.map((item) => (
+              <ChatSmall
+                name={item.name}
+                key={item.chatId}
+                onClick={() => handleClickChat(item.chatId)}
+              />
+            ))}
+        </aside>
+      )}
+      <Chat user={user} />
       <div className="new-button" onClick={handleNewChat}>
         Новый чат
       </div>

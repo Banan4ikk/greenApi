@@ -8,15 +8,17 @@ import Message from "../Message";
 import { getChatId } from "../../utils";
 import { addMessage } from "../../store/chatSlice";
 import { ReturnMessage } from "../../store/chatSlice/types";
+import Loader from "../Loader";
 
 type ChatProps = {
   user: string;
-  chatId: string | null;
 };
 
-const Chat: React.FC<ChatProps> = ({ user, chatId }) => {
+const Chat: React.FC<ChatProps> = ({ user }) => {
   const dispatch = useAppDispatch();
-  const { messages } = useAppSelector((state) => state.chats);
+  const { messages, activeChatId, meta } = useAppSelector(
+    (state) => state.chats
+  );
   const [message, setMessage] = useState("");
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,10 +39,10 @@ const Chat: React.FC<ChatProps> = ({ user, chatId }) => {
       setMessage("");
     }
 
-    if (response.status === 200 && chatId) {
+    if (response.status === 200 && activeChatId) {
       dispatch(
         addMessage({
-          chatId,
+          chatId: activeChatId,
           text: message,
           messageId: response.data.messageId,
         })
@@ -49,24 +51,28 @@ const Chat: React.FC<ChatProps> = ({ user, chatId }) => {
   };
 
   useEffect(() => {
-    if (!messages && chatId) dispatch(fetchMessages(chatId));
-  }, [chatId]);
+    if (activeChatId) dispatch(fetchMessages(activeChatId));
+  }, [activeChatId]);
 
-  if (!chatId) return null;
+  if (!activeChatId) return null;
 
   return (
     <div className="chat">
       <div className="chat-header">{user}</div>
-      <div className="messages">
-        {messages &&
-          messages.map((message) => (
-            <Message
-              text={message.extendedTextMessage?.text}
-              sender={message.type}
-              key={message.idMessage}
-            />
-          ))}
-      </div>
+      {meta.loading ? (
+        <Loader />
+      ) : (
+        <div className="messages">
+          {messages &&
+            messages.map((message) => (
+              <Message
+                text={message.extendedTextMessage?.text}
+                sender={message.type}
+                key={message.idMessage}
+              />
+            ))}
+        </div>
+      )}
       {!messages ||
         (!messages.length && (
           <div className="empty-messages">История сообщений пуста</div>
