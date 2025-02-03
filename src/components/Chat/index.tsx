@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import Message from "../Message";
-import Loader from "../Loader";
+import { Loader, Message } from "components";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchMessages } from "../../store/chatSlice/thunks";
 import { getChatId } from "../../utils";

@@ -10,7 +10,11 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["src/*"],
+      "components": ["components"],
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

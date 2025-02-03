@@ -1,16 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Chat, ChatSmall, Loader } from "components";
+import { addChat, setActiveChatId } from "../../store/chatSlice";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchChats, saveChat } from "../../store/chatSlice/thunks";
 import { getChatId, getChatNameById, isEmptyInstanceData } from "../../utils";
-import { useAppDispatch, useAppSelector } from "../../store";
-import ChatSmall from "../ChatSmall";
-import Chat from "../Chat";
-import NewChatModal from "../Modals/NewChat";
-import apiClient from "../../api/apiClient";
-import "./chatMain.scss";
-import { addChat, setActiveChatId } from "../../store/chatSlice";
+import { NewChatModal } from "../../modals";
 import useShortPolling from "../../utils/hooks/useShortPolling";
-import Loader from "../Loader";
-import AddInstanceData from "../Modals/AddInstanceData";
+import apiClient from "../../api/apiClient";
+import AddInstanceData from "../../modals/AddInstanceData";
+import "./chatMain.scss";
 
 const ChatMain = () => {
   const dispatch = useAppDispatch();

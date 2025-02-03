@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../../Modal";
 import {
   STORAGE_API_TOKEN_INSTANCE,
   STORAGE_API_URL,
   STORAGE_ID_INSTANCE,
-} from "../../../constants";
+} from "../../constants";
+import { Modal } from "../../components";
 
 type InstanceDataProps = {
   isOpen: boolean;

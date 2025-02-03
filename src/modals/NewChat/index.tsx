@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { Modal } from "components";
 import "./newChat.scss";
-import Modal from "../../Modal";
 
 interface NewChatModalProps {
   isOpen: boolean;
