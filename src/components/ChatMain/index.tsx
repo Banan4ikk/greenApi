@@ -1,33 +1,50 @@
-import React, { useEffect, useState } from "react";
-import ChatSmall from "../ChatSmall";
-import Chat from "../Chat";
-import "./chatMain.scss";
-import NewChatModal from "../Modals/NewChat";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchChats, saveChat } from "../../store/chatSlice/thunks";
 import { getChatId, getChatNameById } from "../../utils";
 import { useAppDispatch, useAppSelector } from "../../store";
+import ChatSmall from "../ChatSmall";
+import Chat from "../Chat";
+import NewChatModal from "../Modals/NewChat";
+import apiClient from "../../api/apiClient";
+import "./chatMain.scss";
+import { addChat, setActiveChatId } from "../../store/chatSlice";
+import useShortPolling from "../../utils/hooks/useShortPolling";
 
 const ChatMain = () => {
   const dispatch = useAppDispatch();
-  const { chats } = useAppSelector((store) => store.chats);
+  const { chats, activeChatId } = useAppSelector((store) => store.chats);
+  const isFirstRender = useRef(true); // чтобы не вызывалось 2 раза
   const [isVisibleModal, setIsVisibleModal] = useState(false);
-  const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [user, setUser] = useState("");
+
+  // useShortPolling();
 
   const handleNewChat = () => setIsVisibleModal(true);
 
   const onSubmitNewChat = (userPhone: string) => {
     setUser(userPhone);
-    setActiveChatId(getChatId(userPhone));
+    dispatch(setActiveChatId(getChatId(userPhone)));
     dispatch(saveChat({ name: userPhone, chatId: getChatId(userPhone) }));
+    dispatch(addChat({ name: userPhone, chatId: getChatId(userPhone) }));
   };
   const handleClickChat = (chatId: string) => {
     setUser(getChatNameById(chatId));
-    setActiveChatId(chatId);
+    dispatch(setActiveChatId(chatId));
+  };
+
+  const setSettings = async () => {
+    isFirstRender.current = false;
+    await apiClient.post("/setSettings", {
+      webhookUrl: "",
+      outgoingWebhook: "yes",
+      stateWebhook: "yes",
+      incomingWebhook: "yes",
+    });
   };
 
   useEffect(() => {
     if (!chats) dispatch(fetchChats());
+    if (isFirstRender.current) setSettings();
   }, []);
 
   return (

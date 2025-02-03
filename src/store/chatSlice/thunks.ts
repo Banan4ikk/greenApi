@@ -2,37 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import foreignClient from "../../api/foreignClient";
 import apiClient from "../../api/apiClient";
-
-export type Chat = {
-  name: string;
-  chatId: string;
-};
-
-type ExtendedTextMessage = {
-  text: string;
-  description: string;
-  title: string;
-  previewType: string;
-  jpegThumbnail: string;
-  forwardingScore: number;
-  isForwarded: boolean;
-};
-
-export type Message = {
-  type: "outgoing" | "incoming";
-  idMessage: string;
-  timestamp: number;
-  typeMessage: "extendedTextMessage";
-  chatId: string;
-  textMessage: string;
-  extendedTextMessage: ExtendedTextMessage;
-  statusMessage: string;
-  sendByApi: boolean;
-  deletedMessageId: string;
-  editedMessageId: string;
-  isEdited: boolean;
-  isDeleted: boolean;
-};
+import { Chat, Message } from "./types";
 
 export const fetchChats = createAsyncThunk<Chat[]>(
   "messages/fetchChats", // Префикс для типов действий

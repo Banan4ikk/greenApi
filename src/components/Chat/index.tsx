@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./chat.scss";
+import { AxiosResponse } from "axios";
 import apiClient from "../../api/apiClient";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchMessages } from "../../store/chatSlice/thunks";
 import Message from "../Message";
+import { getChatId } from "../../utils";
+import { addMessage } from "../../store/chatSlice";
+import { ReturnMessage } from "../../store/chatSlice/types";
 
 type ChatProps = {
   user: string;
@@ -21,18 +25,30 @@ const Chat: React.FC<ChatProps> = ({ user, chatId }) => {
 
   const onSend = async () => {
     const data = {
-      chatId: `${user}@c.us`,
+      chatId: getChatId(user),
       message,
     };
-    const response = await apiClient.post(`/sendMessage`, data);
+    const response: AxiosResponse<ReturnMessage> = await apiClient.post(
+      `/sendMessage`,
+      data
+    );
 
     if (response.status === 200) {
       setMessage("");
     }
+
+    if (response.status === 200 && chatId) {
+      dispatch(
+        addMessage({
+          chatId,
+          text: message,
+          messageId: response.data.messageId,
+        })
+      );
+    }
   };
 
   useEffect(() => {
-    console.log("messages", messages, chatId);
     if (!messages && chatId) dispatch(fetchMessages(chatId));
   }, [chatId]);
 
@@ -45,16 +61,21 @@ const Chat: React.FC<ChatProps> = ({ user, chatId }) => {
         {messages &&
           messages.map((message) => (
             <Message
-              text={message.extendedTextMessage.text}
+              text={message.extendedTextMessage?.text}
               sender={message.type}
-              key={message.timestamp}
+              key={message.idMessage}
             />
           ))}
       </div>
+      {!messages ||
+        (!messages.length && (
+          <div className="empty-messages">История сообщений пуста</div>
+        ))}
       <div className="send-container">
         <input
           type="text"
           placeholder="Введите сообщение..."
+          value={message}
           onChange={handleMessageChange}
         />
         <button onClick={onSend}>Отправить</button>
