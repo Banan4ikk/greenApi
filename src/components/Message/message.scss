@@ -1,0 +1,17 @@
+.message {
+  padding: 10px;
+  border-radius: 8px;
+  margin: 5px 0;
+  max-width: 70%;
+  word-wrap: break-word;
+
+  &.me {
+    background: #dcf8c6;
+    align-self: flex-end;
+  }
+
+  &.other {
+    background: #fff;
+    align-self: flex-start;
+  }
+}
