@@ -3,12 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import chatSlice from "./chatSlice";
 import notificationSlice from "./notificationSlice";
 import messagesSlice from "./messagesSlice";
+import errorSlice from "./errorSlice";
 
 const store = configureStore({
   reducer: {
     chats: chatSlice.reducer,
     notification: notificationSlice.reducer,
     messages: messagesSlice.reducer,
+    error: errorSlice.reducer,
   },
 });
 

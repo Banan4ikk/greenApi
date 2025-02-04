@@ -38,8 +38,7 @@ const chatSlice = createSlice({
     builder.addCase(fetchChats.pending, (state) => {
       state.meta.loading = true;
     });
-    builder.addCase(fetchChats.rejected, (state, action) => {
-      state.meta.errors = action.payload;
+    builder.addCase(fetchChats.rejected, (state) => {
       state.meta.loading = false;
     });
 
@@ -49,8 +48,7 @@ const chatSlice = createSlice({
     builder.addCase(saveChat.pending, (state) => {
       state.meta.loading = true;
     });
-    builder.addCase(saveChat.rejected, (state, action) => {
-      state.meta.errors = action.payload;
+    builder.addCase(saveChat.rejected, (state) => {
       state.meta.loading = false;
     });
   },

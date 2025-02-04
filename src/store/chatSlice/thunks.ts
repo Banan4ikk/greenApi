@@ -4,6 +4,7 @@ import foreignClient from "../../api/foreignClient";
 import apiClient from "../../api/apiClient";
 import { Chat } from "./types";
 import { Message } from "../messagesSlice/types";
+import { Error } from "../types";
 
 export const fetchChats = createAsyncThunk<Chat[]>(
   "messages/fetchChats", // Префикс для типов действий
@@ -17,7 +18,7 @@ export const fetchChats = createAsyncThunk<Chat[]>(
       }
       return fulfillWithValue(response.data);
     } catch (e) {
-      return rejectWithValue(e);
+      return rejectWithValue(e as Error);
     }
   }
 );

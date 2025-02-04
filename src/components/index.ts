@@ -4,3 +4,4 @@ export { default as ChatSmall } from "./ChatSmall";
 export { default as Loader } from "./Loader";
 export { default as Message } from "./Message";
 export { default as Modal } from "./Modal";
+export { default as ErrorNotification } from "./ErrorNotification";

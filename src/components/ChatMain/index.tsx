@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Chat, ChatSmall, Loader } from "components";
+import { Chat, ChatSmall, ErrorNotification, Loader } from "components";
 import { addChat, setActiveChatId } from "../../store/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchChats, saveChat } from "../../store/chatSlice/thunks";
@@ -91,6 +91,7 @@ const ChatMain = () => {
         isOpen={isVisibleInstanceModal}
         onClose={onCloseInstanceModal}
       />
+      <ErrorNotification />
     </div>
   );
 };

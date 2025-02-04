@@ -48,8 +48,7 @@ const messagesSlice = createSlice({
     builder.addCase(fetchMessages.pending, (state) => {
       state.meta.loading = true;
     });
-    builder.addCase(fetchMessages.rejected, (state, action) => {
-      state.meta.errors = action.payload;
+    builder.addCase(fetchMessages.rejected, (state) => {
       state.meta.loading = false;
     });
   },
