@@ -26,7 +26,7 @@ const chatSlice = createSlice({
       state.activeChatId = null;
     },
     addChat: (state, { payload }: PayloadAction<Chat>) => {
-      if (!state.chats) return;
+      if (!state.chats) state.chats = [];
       state.chats = [...state.chats, payload];
     },
   },
